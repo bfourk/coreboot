@@ -68,6 +68,9 @@ config BOARD_GOOGLE_GLASSWAY
 config BOARD_GOOGLE_GOTHRAX
 	bool "->  Gothrax"
 
+config BOARD_GOOGLE_GUREN
+	bool "->  Guren"
+
 config BOARD_GOOGLE_HADES
 	bool "->  Hades"
 
@@ -94,6 +97,9 @@ config BOARD_GOOGLE_MITHRAX
 
 config BOARD_GOOGLE_MOLI
 	bool "->  Moli"
+
+config BOARD_GOOGLE_MOXIE
+	bool "->  Moxie"
 
 config BOARD_GOOGLE_NIVVIKS
 	bool "->  Nivviks"
@@ -217,3 +223,6 @@ config BOARD_GOOGLE_ORISA
 
 config BOARD_GOOGLE_TELITH
 	bool "->  Telith"
+
+config BOARD_GOOGLE_MELIKS
+	bool "->  Meliks"

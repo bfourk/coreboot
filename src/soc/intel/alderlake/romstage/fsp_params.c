@@ -8,6 +8,7 @@
 #include <device/device.h>
 #include <drivers/wifi/generic/wifi.h>
 #include <elog.h>
+#include <fsp/api.h>
 #include <fsp/fsp_debug_event.h>
 #include <fsp/util.h>
 #include <gpio.h>
@@ -16,6 +17,7 @@
 #include <intelblocks/cse.h>
 #include <intelblocks/pcie_rp.h>
 #include <option.h>
+#include <soc/intel/common/reset.h>
 #include <soc/iomap.h>
 #include <soc/msr.h>
 #include <soc/pci_devs.h>
@@ -412,6 +414,13 @@ static void debug_override_memory_init_params(FSP_M_CONFIG *mupd)
 {
 	debug_get_pch_cpu_tracehub_modes(&mupd->CpuTraceHubMode, &mupd->PchTraceHubMode);
 }
+
+#if CONFIG(PLATFORM_HAS_EARLY_LOW_BATTERY_INDICATOR)
+void platform_display_early_shutdown_notification(void *arg)
+{
+	ux_inform_user_of_poweroff_operation("low-battery shutdown");
+}
+#endif
 
 static void fill_fspm_sign_of_life(FSP_M_CONFIG *m_cfg,
 				   FSPM_ARCH_UPD *arch_upd)

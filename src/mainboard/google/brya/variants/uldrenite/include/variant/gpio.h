@@ -7,8 +7,9 @@
 
 #define WWAN_FCPO	GPP_H23
 #define WWAN_RST	GPP_F12
-#define WWAN_PERST	GPP_H13
+#define WWAN_PERST	GPP_F13
 #define T1_OFF_MS	20
 #define T2_OFF_MS	10
+#define T0_OFF_MS	150
 
 #endif

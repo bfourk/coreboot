@@ -2,6 +2,7 @@ chip soc/intel/alderlake
 	# FSP UPDs
 	register "eist_enable"			= "true"
 	register "enable_c6dram"		= "1"
+	register "energy_efficient_turbo"	= "true"
 	register "sagv"				= "SaGv_Enabled"
 
 	# Serial I/O
@@ -20,10 +21,10 @@ chip soc/intel/alderlake
 	}"
 
 	# Power
-	register "pch_slp_s3_min_assertion_width"	= "2"			# 50ms
-	register "pch_slp_s4_min_assertion_width"	= "3"			# 1s
-	register "pch_slp_sus_min_assertion_width"	= "3"			# 500ms
-	register "pch_slp_a_min_assertion_width"	= "3"			# 2s
+	register "pch_slp_s3_min_assertion_width"	= "SLP_S3_ASSERTION_1_MS"
+	register "pch_slp_s4_min_assertion_width"	= "SLP_S4_ASSERTION_3S"
+	register "pch_slp_sus_min_assertion_width"	= "SLP_SUS_ASSERTION_1_S"
+	register "pch_slp_a_min_assertion_width"	= "SLP_A_ASSERTION_98_MS"
 
 	# Device Tree
 	device domain 0 on
@@ -39,12 +40,12 @@ chip soc/intel/alderlake
 		device ref gna		on  end
 		device ref xhci		on
 			# Motherboard USB 3.0 Type-C
-			register "usb2_ports[0]"		= "USB2_PORT_MID(OC5)"
-			register "usb3_ports[2]"		= "USB3_PORT_DEFAULT(OC3)"
+			register "usb2_ports[0]"		= "USB2_PORT_MID(OC_SKIP)"
+			register "usb3_ports[2]"		= "USB3_PORT_DEFAULT(OC_SKIP)"
 
 			# Motherboard USB 3.0 Type-A
 			register "usb2_ports[2]"		= "USB2_PORT_MID(OC_SKIP)"
-			register "usb3_ports[0]"		= "USB3_PORT_DEFAULT(OC5)"
+			register "usb3_ports[0]"		= "USB3_PORT_DEFAULT(OC_SKIP)"
 
 			# Daughterboard USB 3.0 Type-A
 			register "usb2_ports[6]"		= "USB2_PORT_MID(OC0)"
@@ -200,9 +201,9 @@ chip soc/intel/alderlake
 		end
 		device ref uart0	on  end
 		device ref pch_espi	on
-			register "gen1_dec"			= "0x00fc0201"
-			register "gen2_dec"			= "0x00000381"
-			register "gen3_dec"			= "0x00000511"
+			register "gen1_dec"			= "0x00040069"
+			register "gen2_dec"			= "0x00fc0201"
+			register "gen3_dec"			= "0x000c0081"
 
 			chip drivers/pc80/tpm
 				device pnp 0c31.0 on end

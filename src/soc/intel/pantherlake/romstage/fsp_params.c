@@ -2,6 +2,7 @@
 
 #include <cpu/intel/common/common.h>
 #include <cpu/x86/msr.h>
+#include <elog.h>
 #include <fsp/debug.h>
 #include <fsp/fsp_debug_event.h>
 #include <fsp/util.h>
@@ -11,6 +12,8 @@
 #include <soc/pcie.h>
 #include <soc/romstage.h>
 #include <static.h>
+
+#include "ux.h"
 
 #define FSP_CLK_NOTUSED		0xff
 #define FSP_CLK_LAN		0x70
@@ -73,6 +76,11 @@ static void fill_fspm_mrc_params(FSP_M_CONFIG *m_cfg,
 			m_cfg->SaGvWpMask = config->sagv_wp_bitmap;
 		else
 			m_cfg->SaGvWpMask = SAGV_POINTS_0_1_2_3;
+
+		for (size_t i = 0; i < HOB_MAX_SAGV_POINTS; i++) {
+			m_cfg->SaGvFreq[i] = config->sagv_freq_mhz[i];
+			m_cfg->SaGvGear[i] = config->sagv_gear[i];
+		}
 	}
 
 	if (config->max_dram_speed_mts)
@@ -277,9 +285,24 @@ static void fill_fspm_thermal_params(FSP_M_CONFIG *m_cfg,
 static void fill_fspm_vr_config_params(FSP_M_CONFIG *m_cfg,
 				       const struct soc_intel_pantherlake_config *config)
 {
-	for (size_t i = 0; i < ARRAY_SIZE(m_cfg->EnableFastVmode); i++)
-		m_cfg->EnableFastVmode[i] = 0;
+	for (size_t i = 0; i < ARRAY_SIZE(config->enable_fast_vmode); i++) {
+		if (config->cep_enable[i]) {
+			m_cfg->CepEnable[i] = config->cep_enable[i];
+			if (config->enable_fast_vmode[i]) {
+				m_cfg->EnableFastVmode[i] = config->enable_fast_vmode[i];
+				m_cfg->IccLimit[i] = config->fast_vmode_i_trip[i];
+			}
+		}
+	}
 }
+
+#if CONFIG(PLATFORM_HAS_EARLY_LOW_BATTERY_INDICATOR)
+void platform_display_early_shutdown_notification(void *arg)
+{
+	FSPM_UPD *mupd = arg;
+	ux_inform_user_of_poweroff_operation("low-battery shutdown", mupd);
+}
+#endif
 
 static void soc_memory_init_params(FSP_M_CONFIG *m_cfg,
 				   const struct soc_intel_pantherlake_config *config)
@@ -350,6 +373,20 @@ static void fill_fsp_event_handler(FSPM_UPD *mupd)
 	fsp_control_log_level(mupd, fsp_debug_enable);
 }
 
+static void fill_fspm_sign_of_life(FSPM_UPD *mupd)
+{
+	FSPM_ARCHx_UPD *arch_upd = &mupd->FspmArchUpd;
+
+	if (arch_upd->NvsBufferPtr)
+		return;
+
+	/* To enhance the user experience, let's display on-screen guidance during memory
+	   training, acknowledging that the process may require patience. */
+	printk(BIOS_INFO, "Enabling FSP-M Sign-of-Life\n");
+	elog_add_event_byte(ELOG_TYPE_FW_EARLY_SOL, ELOG_FW_EARLY_SOL_MRC);
+	ux_inform_user_of_update_operation("memory training", mupd);
+}
+
 void platform_fsp_memory_init_params_cb(FSPM_UPD *mupd, uint32_t version)
 {
 	const struct soc_intel_pantherlake_config *config = config_of_soc();
@@ -358,6 +395,10 @@ void platform_fsp_memory_init_params_cb(FSPM_UPD *mupd, uint32_t version)
 		fill_fsp_event_handler(mupd);
 
 	soc_memory_init_params(&mupd->FspmConfig, config);
+
+	if (CONFIG(FSP_UGOP_EARLY_SIGN_OF_LIFE))
+		fill_fspm_sign_of_life(mupd);
+
 	mainboard_memory_init_params(mupd);
 }
 

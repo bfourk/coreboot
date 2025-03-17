@@ -37,7 +37,7 @@ const struct pad_config gpio_table[] = {
 	/* GPD8:	Suspend Clock					*/
 	PAD_CFG_NF(GPD8, NONE, DEEP, NF1),
 	/* GPD9:	Wireless LAN Sleep				*/
-	PAD_CFG_NF(GPD9, NONE, DEEP, NF1),
+	PAD_NC(GPD9, NONE),
 	/* GPD10:	Sleep S5					*/
 	PAD_NC(GPD10, NONE),
 	/* GPD11:	LAN PHY Enable					*/
@@ -63,7 +63,7 @@ const struct pad_config gpio_table[] = {
 	/* A12:		PCH M.2 SSD PEDET				*/
 	PAD_CFG_NF(GPP_A12, NONE, DEEP, NF1),
 	/* A13:		BlueTooth RF Kill				*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_A13, 1, DEEP, NONE),
+	PAD_CFG_GPO(GPP_A13, 1, DEEP),
 	/* A14:		Type C VBUS OverCurrent				*/
 	PAD_CFG_NF(GPP_A14, NONE, DEEP, NF1),
 	/* A15:		Test Point 3					*/
@@ -229,7 +229,7 @@ const struct pad_config gpio_table[] = {
 	/* D15:		Not Connected					*/
 	PAD_NC(GPP_D15, NONE),
 	/* D16:		PCH M.2 SSD Power Enable			*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_D16, 1, DEEP, NONE),
+	PAD_CFG_GPO(GPP_D16, 1, DEEP),
 	/* D17:		Not Connected					*/
 	PAD_NC(GPP_D17, NONE),
 	/* D18:		Not Connected					*/
@@ -244,7 +244,7 @@ const struct pad_config gpio_table[] = {
 	/* E2:		Not Connected					*/
 	PAD_NC(GPP_E2, NONE),
 	/* E3:		WiFi RF Kill					*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_E3, 1, DEEP, NONE),
+	PAD_CFG_GPO(GPP_E3, 1, DEEP),
 	/* E4:		Test Point 7					*/
 	PAD_NC(GPP_E4, NONE),
 	/* E5:		Not Connected					*/
@@ -256,7 +256,7 @@ const struct pad_config gpio_table[] = {
 	/* E7:		Embedded Controller SMI				*/
 	PAD_NC(GPP_E7, NONE),
 	/* E8:		DRAM Sleep					*/
-	PAD_NC(GPP_E8, NONE),
+	PAD_CFG_GPO(GPP_E8, 1, DEEP),
 	/* E9:		USB OverCurrent 0				*/
 	PAD_CFG_NF(GPP_E9, NONE, DEEP, NF1),
 	/* E10:		Not Connected					*/
@@ -340,7 +340,7 @@ const struct pad_config gpio_table[] = {
 	PAD_NC(GPP_F23, NONE),
 
 	/* H0:		PCH M.2 SSD Reset				*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_H0, 1, PLTRST, NONE),
+	PAD_CFG_GPO(GPP_H0, 1, PLTRST),
 	/* H1:		BFX Strap 2 Bit 3	Weak Internal PD 20K	*/
 	PAD_CFG_GPO(GPP_H1, 0, DEEP),
 	/* H2:		Wireless LAN Reset				*/
@@ -451,26 +451,36 @@ const struct pad_config gpio_table[] = {
 	/* R7:		Not Connected					*/
 	PAD_NC(GPP_R7, NONE),
 
-	/* BT_EN */
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_VGPIO_0, 1, DEEP, NONE),
-
-	/* CNVi BT UART0 */
+	/* CNV_BTEN */
+	PAD_CFG_GPO(GPP_VGPIO_0, 1, DEEP),
+	/* CNV_BT_HOST_WAKEB */
+	PAD_NC(GPP_VGPIO_4, NONE),
+	/* CNV_BT_IF_SELECT */
+	PAD_CFG_GPO(GPP_VGPIO_5, 1, DEEP),
+	/* vCNV_BT_UART_TXD */
 	PAD_NC(GPP_VGPIO_6, NONE),
+	/* vCNV_BT_UART_RXD */
 	PAD_NC(GPP_VGPIO_7, NONE),
+	/* vCNV_BT_UART_CTS_B */
 	PAD_NC(GPP_VGPIO_8, NONE),
+	/* vCNV_BT_UART_RTS_B */
 	PAD_NC(GPP_VGPIO_9, NONE),
-
-	/* CNVi UART0 */
+	/* vUART0_TXD */
 	PAD_NC(GPP_VGPIO_18, NONE),
+	/* vUART0_RXD */
 	PAD_NC(GPP_VGPIO_19, NONE),
+	/* vUART0_CTS_B */
 	PAD_NC(GPP_VGPIO_20, NONE),
+	/* vUART0_RTS_B */
 	PAD_NC(GPP_VGPIO_21, NONE),
-
-	/* BT I2S */
-	PAD_CFG_NF(GPP_VGPIO_30, NONE, DEEP, NF3),
-	PAD_CFG_NF(GPP_VGPIO_31, NONE, DEEP, NF3),
-	PAD_CFG_NF(GPP_VGPIO_32, NONE, DEEP, NF3),
-	PAD_CFG_NF(GPP_VGPIO_33, NONE, DEEP, NF3),
+	/* BT_I2S_BCLK */
+	PAD_NC(GPP_VGPIO_30, NONE),
+	/* BT_I2S_SYNC */
+	PAD_NC(GPP_VGPIO_31, NONE),
+	/* BT_I2S_SDO */
+	PAD_NC(GPP_VGPIO_32, NONE),
+	/* BT_I2S_SDI */
+	PAD_NC(GPP_VGPIO_33, NONE),
 };
 
 const struct pad_config *variant_gpio_table(size_t *num)

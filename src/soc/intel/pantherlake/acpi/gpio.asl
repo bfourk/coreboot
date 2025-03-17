@@ -438,7 +438,7 @@ Device (GPI1)
 	}
 }
 
-/* GPIO Community 3: CPUJTAG, GPP_H, GPP_A, VGPIO3 */
+/* GPIO Community 3: CPUJTAG (reserved), GPP_H, GPP_A, VGPIO3 */
 Device (GPI3)
 {
 	Name (_HID, ACPI_GPIO_HID)
@@ -511,7 +511,7 @@ Device (GPI3)
 			Package (0x02)
 			{
 				"intc-gpio-group-0-subproperties",
-				JTAG
+				RSVD
 			},
 
 			Package (0x02)
@@ -533,8 +533,8 @@ Device (GPI3)
 			}
 		}
 	})
-	/* first bank/group in community 3: CPUJTAG */
-	Name (JTAG, Package (0x02)
+	/* first bank/group in community 3: RSVD */
+	Name (RSVD, Package (0x02)
 	{
 		ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 		Package (0x03)
@@ -542,19 +542,19 @@ Device (GPI3)
 			Package (0x02)
 			{
 				"intc-gpio-group-name",
-				GPP_CPUJTAG_NAME
+				"RSVD"
 			},
 
 			Package (0x02)
 			{
 				"intc-gpio-pad-count",
-				NUM_GRP_CPUJTAG_PADS
+				NUM_GRP_RSVD_PADS
 			},
 
 			Package (0x02)
 			{
 				"intc-gpio-group-offset",
-				GPP_CPUJTAG_START_OFFSET
+				GPP_RSVD_START_OFFSET
 			}
 		}
 	})

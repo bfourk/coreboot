@@ -2,7 +2,7 @@ chip soc/intel/alderlake
 	# FSP UPDs
 	register "enable_c6dram"		= "true"
 	register "eist_enable"			= "true"
-	register "cnvi_bt_audio_offload"	= "true"
+	register "energy_efficient_turbo"	= "true"
 	register "cnvi_bt_core"			= "true"
 	register "sagv"				= "SaGv_Enabled"
 
@@ -12,10 +12,10 @@ chip soc/intel/alderlake
 	}"
 
 	# Power
-	register "pch_slp_s3_min_assertion_width"	= "2"			# 50ms
-	register "pch_slp_s4_min_assertion_width"	= "3"			# 1s
-	register "pch_slp_sus_min_assertion_width"	= "3"			# 500ms
-	register "pch_slp_a_min_assertion_width"	= "3"			# 2s
+	register "pch_slp_s3_min_assertion_width"	= "SLP_S3_ASSERTION_1_MS"
+	register "pch_slp_s4_min_assertion_width"	= "SLP_S4_ASSERTION_3S"
+	register "pch_slp_sus_min_assertion_width"	= "SLP_SUS_ASSERTION_1_S"
+	register "pch_slp_a_min_assertion_width"	= "SLP_A_ASSERTION_98_MS"
 
 	device domain 0 on
 		device ref igpu		on
@@ -123,7 +123,6 @@ chip soc/intel/alderlake
 						register "type"		= "UPC_TYPE_INTERNAL"
 						register "group"	= "ACPI_PLD_GROUP(0, 5)"
 						register "is_intel_bluetooth" = "1"
-						register "cnvi_bt_audio_offload" = "1"
 						register "enable_gpio"	= "ACPI_GPIO_OUTPUT_ACTIVE_HIGH(GPP_VGPIO_0)"
 						register "reset_gpio"	= "ACPI_GPIO_OUTPUT_ACTIVE_LOW(GPP_A13)"
 						device ref usb2_port10 on end
@@ -135,6 +134,7 @@ chip soc/intel/alderlake
 		device ref cnvi_wifi	on
 			chip drivers/wifi/generic
 				register "add_acpi_dma_property"	= "true"
+				register "cnvi_enable_gpio"		= "ACPI_GPIO_OUTPUT_ACTIVE_HIGH(GPP_E3)"
 				register "enable_cnvi_ddr_rfim"		= "true"
 				device generic 0 on end
 			end

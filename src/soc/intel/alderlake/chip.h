@@ -596,6 +596,9 @@ struct soc_intel_alderlake_config {
 	 */
 	bool dmi_power_optimize_disable;
 
+	/* Enable/Disable Energy Efficient Turbo */
+	bool energy_efficient_turbo;
+
 	/*
 	 * Used to communicate the power delivery design capability of the board. This
 	 * value is an enum of the available power delivery segments that are defined in
@@ -799,6 +802,15 @@ struct soc_intel_alderlake_config {
 		PD_TIER_PREMIUM = 25000,
 		PD_TIER_VOLUME  = 27000
 	} vccin_aux_imon_iccmax;
+
+	/* Enable / Disable(default) Type C Port x Convert to TypeA */
+	bool enabletcsscovtypea[4];
+
+	/*
+	 * PCH xhci port x for Type C Port x mapping.
+	 * Input PCH xhci port x for Type C Port 0 mapping.
+	 */
+	uint8_t mappingpchxhciusba[4];
 };
 
 typedef struct soc_intel_alderlake_config config_t;

@@ -7,9 +7,9 @@
 #include <commonlib/bsd/bcd.h>
 #include <console/console.h>
 #include <delay.h>
+#include <rtc.h>
 #include <soc/mt6685.h>
-#include <soc/mt6685_rtc.h>
-#include <soc/mt6685_rtc_hw.h>
+#include <soc/rtc.h>
 #include <stdbool.h>
 #include <timer.h>
 
@@ -344,6 +344,10 @@ static bool rtc_init_after_recovery(void)
 static void rtc_recovery_flow(void)
 {
 	printk(BIOS_INFO, "%s: enter\n", __func__);
+
+	config_interface(SCK_TOP_XTAL_SEL_ADDR, 1, SCK_TOP_XTAL_SEL_MASK,
+			 SCK_TOP_XTAL_SEL_SHIFT);
+	udelay(100);
 
 	if (!retry(RECOVERY_RETRY_COUNT,
 		   rtc_frequency_meter_check() &&

@@ -9,10 +9,14 @@ void mainboard_memory_init_params(FSPM_UPD *mupd)
 {
 	const struct mb_cfg mem_config = {
 		.type = MEM_TYPE_DDR5,
-		.ect = false,
-		.UserBd = BOARD_TYPE_MOBILE,
+		.ect = true,
+		.UserBd = BOARD_TYPE_ULT_ULX,
 		.ddr_config = {
 			.dq_pins_interleaved = false,
+		},
+		.rcomp = {
+			.resistor = 100,
+			.targets = {70, 30, 25, 25, 25},
 		}
 	};
 
@@ -40,4 +44,5 @@ void mainboard_memory_init_params(FSPM_UPD *mupd)
 		mupd->FspmConfig.PcieRpEnableMask &= ~(1 << 8);
 
 	mupd->FspmConfig.PchHdaSubSystemIds = 0x70381e50;
+	mupd->FspmConfig.MmioSize = 0xb00;
 };

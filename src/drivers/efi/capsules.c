@@ -344,7 +344,15 @@ static struct block_descr check_capsule_block(struct block_descr first_block,
 			goto error;
 		}
 
-		data_size += ALIGN_UP(capsule_hdr->CapsuleImageSize, CAPSULE_ALIGNMENT);
+		uint64_t capsule_size =
+			ALIGN_UP((uint64_t)capsule_hdr->CapsuleImageSize, CAPSULE_ALIGNMENT);
+		if (data_size + capsule_size < data_size) { /* overflow detection */
+			printk(BIOS_ERR,
+			       "capsules: capsules block size is too large (%#llx + %#llx) for uint64.\n",
+			       data_size, capsule_size);
+			goto error;
+		}
+		data_size += capsule_size;
 
 		uint32_t size_left = capsule_hdr->CapsuleImageSize;
 		while (size_left != 0) {
@@ -384,6 +392,12 @@ static struct block_descr check_capsule_block(struct block_descr first_block,
 	}
 
 	/* Increase the size only on successful parsing of the capsule block. */
+	if (*total_data_size + data_size < *total_data_size) { /* overflow detection */
+		printk(BIOS_ERR,
+		       "capsules: total capsule's size is too large (%#llx + %#llx) for uint64.\n",
+		       *total_data_size, data_size);
+		goto error;
+	}
 	*total_data_size += data_size;
 
 	return block;
@@ -582,6 +596,7 @@ static void coalesce_capsules(struct block_descr block_chain, uint8_t *target)
 {
 	struct block_descr block = block_chain;
 	uint8_t *capsule_start = NULL;
+	uint32_t capsule_size = 0;
 	uint32_t size_left = 0;
 
 	/* No safety checks in this function, as all of them were done earlier. */
@@ -596,8 +611,10 @@ static void coalesce_capsules(struct block_descr block_chain, uint8_t *target)
 		if (size_left == 0) {
 			const EFI_CAPSULE_HEADER *capsule_hdr =
 				map_range(block.addr, sizeof(*capsule_hdr));
-			size_left = capsule_hdr->CapsuleImageSize;
+			capsule_size = capsule_hdr->CapsuleImageSize;
 			capsule_start = target;
+
+			size_left = capsule_size;
 		}
 
 		uint64_t addr = block.addr;
@@ -627,13 +644,14 @@ static void coalesce_capsules(struct block_descr block_chain, uint8_t *target)
 			}
 
 			uefi_capsules[uefi_capsule_count].base = (uintptr_t)capsule_start;
-			uefi_capsules[uefi_capsule_count].len = block.len;
+			uefi_capsules[uefi_capsule_count].len = capsule_size;
 			uefi_capsule_count++;
 
 			/* This is to align start of the next capsule (assumes that
 			   initial value of target was suitably aligned). */
-			if (!IS_ALIGNED(block.len, CAPSULE_ALIGNMENT))
-				target += ALIGN_UP(block.len, CAPSULE_ALIGNMENT) - block.len;
+			if (!IS_ALIGNED(capsule_size, CAPSULE_ALIGNMENT))
+				target += ALIGN_UP(capsule_size, CAPSULE_ALIGNMENT) -
+					  capsule_size;
 		}
 	}
 

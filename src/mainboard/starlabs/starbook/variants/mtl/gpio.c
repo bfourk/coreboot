@@ -4,9 +4,9 @@
 
 /* Early pad configuration in bootblock */
 const struct pad_config early_gpio_table[] = {
-	/* H10:	UART0 RXD			*/
+	/* H08:	UART0 RXD			*/
 	PAD_CFG_NF(GPP_H08, NONE, DEEP, NF1),
-	/* H11:	UART0 TXD			*/
+	/* H09:	UART0 TXD			*/
 	PAD_CFG_NF(GPP_H09, NONE, DEEP, NF1),
 
 	/* C00:	SMB_CLK				*/
@@ -249,14 +249,14 @@ const struct pad_config gpio_table[] = {
 	 * End:		GPP_H23
 	 */
 	/* H00:	M.2_PCH_SSD_RESET_N		*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_H00, 1, PLTRST, NONE),
+	PAD_CFG_GPO(GPP_H00, 1, PLTRST),
 	/* H01:	FLASH RECOVERY
 	 *		HIGH:	ENABLED
 	 *		LOW:	DISABLED
 	 *		WEAK INTERNAL PD 20K	*/
 	PAD_NC(GPP_H01, NONE),
 	/* H02:	WLAN_RST_N			*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_H02, 1, PLTRST, NONE),
+	PAD_CFG_GPO(GPP_H02, 1, PLTRST),
 	/* H03:					*/
 	PAD_NC(GPP_H03, NONE),
 	/* H04:					*/
@@ -266,11 +266,7 @@ const struct pad_config gpio_table[] = {
 	/* H06:					*/
 	PAD_NC(GPP_H06, NONE),
 	/* H07:	M.2_CPU_SSD_PWREN		*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_H07, 1, DEEP, NONE),
-	/* H08:					*/
-	PAD_NC(GPP_H08, NONE),
-	/* H09:					*/
-	PAD_NC(GPP_H09, NONE),
+	PAD_CFG_GPO(GPP_H07, 1, DEEP),
 	/* H10:					*/
 	PAD_NC(GPP_H10, NONE),
 	/* H11:					*/
@@ -428,13 +424,13 @@ const struct pad_config gpio_table[] = {
 	/* B15:					*/
 	PAD_NC(GPP_B15, NONE),
 	/* B16:	DDIB_DP_HPD			*/
-	PAD_CFG_NF(GPP_B16, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_B16, NONE, DEEP, NF2),
 	/* B17:					*/
 	PAD_NC(GPP_B17, NONE),
 	/* B18:	BT_RF_KILL_N			*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_B18, 1, DEEP, NONE),
+	PAD_CFG_GPO(GPP_B18, 1, DEEP),
 	/* B19:	WIFI_RF_KILL_N			*/
-	PAD_CFG_GPO_GPIO_DRIVER(GPP_B19, 1, DEEP, NONE),
+	PAD_CFG_GPO(GPP_B19, 1, DEEP),
 	/* B20:					*/
 	PAD_NC(GPP_B20, NONE),
 	/* B21:					*/
@@ -494,7 +490,7 @@ const struct pad_config gpio_table[] = {
 	PAD_CFG_NF(GPP_D20, NONE, DEEP, NF1),
 	/* D21:	CLKREQ5
 	 *			WLAN		*/
-	PAD_CFG_NF(GPP_D21, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_D21, NONE, DEEP, NF2),
 	/* D22:					*/
 	PAD_NC(GPP_D22, NONE),
 	/* D23:					*/

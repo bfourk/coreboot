@@ -420,3 +420,26 @@ header_pointer-position := -4
 header_pointer-type := "cbfs header"
 
 romstage-y += ux_locales.c
+
+# Add logo to the cbfs image
+BMP_LOGO_COMPRESS_FLAG := $(CBFS_COMPRESS_FLAG)
+ifeq ($(CONFIG_BMP_LOGO_COMPRESS_LZMA),y)
+	BMP_LOGO_COMPRESS_FLAG := LZMA
+else ifeq ($(CONFIG_BMP_LOGO_COMPRESS_LZ4),y)
+	BMP_LOGO_COMPRESS_FLAG := LZ4
+endif
+
+define add_bmp_logo_file_to_cbfs
+cbfs-files-$$($(1)) += $(2)
+$(2)-file := $$(call strip_quotes,$$($(3)))
+$(2)-type := raw
+$(2)-compression := $$(BMP_LOGO_COMPRESS_FLAG)
+endef
+
+ifneq ($(CONFIG_HAVE_CUSTOM_BMP_LOGO),y)
+$(eval $(call add_bmp_logo_file_to_cbfs,CONFIG_BMP_LOGO, logo.bmp,\
+	      CONFIG_BMP_LOGO_FILE_NAME))
+endif
+
+$(eval $(call add_bmp_logo_file_to_cbfs,CONFIG_PLATFORM_HAS_LOW_BATTERY_INDICATOR, \
+	      low_battery.bmp,CONFIG_PLATFORM_LOW_BATTERY_INDICATOR_LOGO_PATH))

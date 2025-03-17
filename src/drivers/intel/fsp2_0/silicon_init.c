@@ -14,7 +14,12 @@
 #include <mrc_cache.h>
 #include <program_loading.h>
 #include <soc/intel/common/reset.h>
+#if CONFIG(SOC_AMD_COMMON)
+#include <amdblocks/vbt.h>
+#endif
+#if CONFIG(SOC_INTEL_COMMON)
 #include <soc/intel/common/vbt.h>
+#endif
 #include <stage_cache.h>
 #include <string.h>
 #include <timestamp.h>
@@ -253,6 +258,9 @@ void fsp_silicon_init(void)
 {
 	fsps_load();
 	do_silicon_init(&fsps_hdr);
+
+	if (platform_is_low_battery_shutdown_needed())
+		do_low_battery_poweroff();
 
 	if (CONFIG(CACHE_MRC_SETTINGS) && CONFIG(FSP_NVS_DATA_POST_SILICON_INIT))
 		save_memory_training_data();

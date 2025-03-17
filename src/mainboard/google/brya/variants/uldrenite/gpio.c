@@ -61,10 +61,10 @@ static const struct pad_config gpio_table[] = {
 	PAD_CFG_GPI_IRQ_WAKE(GPP_B3, NONE, PWROK, LEVEL, INVERT),
 	/* B4  : PROC_GP3 ==> EN_PP3300_UCAM_X */
 	PAD_CFG_GPO_LOCK(GPP_B4, 1, LOCK_CONFIG),
-	/* B5  : GPP_B5 ==> ISH_I2C0_SCL */
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_B5, NONE, DEEP, NF1),
-	/* B6  : GPP_B6 ==> ISH_I2C0_SDA */
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_B6, NONE, DEEP, NF1),
+	/* B5  : GPP_B5 ==> NC */
+	PAD_NC(GPP_B5, NONE),
+	/* B6  : GPP_B6 ==> NC */
+	PAD_NC(GPP_B6, NONE),
 	/* B7  : GPP_B7 ==> NC */
 	PAD_NC_LOCK(GPP_B7, NONE, LOCK_CONFIG),
 	/* B8  : GPP_B8 ==> NC */
@@ -184,7 +184,7 @@ static const struct pad_config gpio_table[] = {
 	PAD_NC_LOCK(GPP_E11, NONE, LOCK_CONFIG),
 	/* E12 : THC0_SPI1_IO1 ==> RAM_ID2 */
 	PAD_CFG_GPI_LOCK(GPP_E12, NONE, LOCK_CONFIG),
-	/* E13 : NC ==> RAM_ID3 */
+	/* E13 : NC ==> GPP_E13_STRAP */
 	PAD_CFG_GPI_LOCK(GPP_E13, NONE, LOCK_CONFIG),
 	/* E14 : DDSP_HPDA ==> EDP_HPD */
 	PAD_CFG_NF(GPP_E14, NONE, DEEP, NF1),
@@ -232,9 +232,9 @@ static const struct pad_config gpio_table[] = {
 	/* F11 : NC */
 	PAD_NC_LOCK(GPP_F11, NONE, LOCK_CONFIG),
 	/* F12 : NC ==> WWAN_RST_L */
-	PAD_CFG_GPO(GPP_F12, 0, DEEP),
+	PAD_CFG_GPO(GPP_F12, 1, DEEP),
 	/* F13 : NC ==> PLTRST_WWAN# */
-	PAD_CFG_GPO(GPP_F13, 0, DEEP),
+	PAD_CFG_GPO(GPP_F13, 1, DEEP),
 	/* F14 : NC */
 	PAD_NC(GPP_F14, NONE),
 	/* F15 : NC */
@@ -303,7 +303,7 @@ static const struct pad_config gpio_table[] = {
 	/* H22 : NC */
 	PAD_NC(GPP_H22, NONE),
 	/* H23 : LTE_PWR_OFF_EN */
-	PAD_CFG_GPO(GPP_H23, 0, DEEP),
+	PAD_CFG_GPO(GPP_H23, 1, DEEP),
 
 	/* R0  : HDA_BCLK ==> HDA_BIT_CLK */
 	PAD_CFG_NF(GPP_R0, NONE, DEEP, NF1),
@@ -418,6 +418,8 @@ static const struct pad_config early_gpio_table[] = {
 	PAD_CFG_GPI_APIC(GPP_A17, NONE, PLTRST, LEVEL, INVERT),
 	/* E3 : PROC_GP0 ==> SOC_WP_OD */
 	PAD_CFG_GPI_GPIO_DRIVER(GPP_E3, NONE, DEEP),
+	/* E13 : NC ==> GPP_E13_STRAP */
+	PAD_CFG_GPI_LOCK(GPP_E13, NONE, LOCK_CONFIG),
 	/* F12 : NC ==> WWAN_RST_L */
 	PAD_CFG_GPO(GPP_F12, 0, DEEP),
 	/* F13 : NC ==> PLTRST_WWAN# */
@@ -433,7 +435,7 @@ static const struct pad_config early_gpio_table[] = {
 	/* H11 : UART0_TXD ==> UART_SOC_TX_DBG_RX */
 	PAD_CFG_NF(GPP_H11, NONE, DEEP, NF2),
 	/* H23 : LTE_PWR_OFF_EN */
-	PAD_CFG_GPO(GPP_H23, 0, DEEP),
+	PAD_CFG_GPO(GPP_H23, 1, DEEP),
 };
 
 /* Fill romstage gpio configuration */
@@ -443,6 +445,8 @@ static const struct pad_config romstage_gpio_table[] = {
 	PAD_CFG_GPO(GPP_E17, 1, DEEP),
 	/* D15  : GPP_D15 ==> SOC_TS_I2C_RST# */
 	PAD_CFG_GPO(GPP_D15, 0, DEEP),
+	/* F12 : NC ==> WWAN_RST_L */
+	PAD_CFG_GPO(GPP_F12, 1, DEEP),
 };
 
 const struct pad_config *variant_gpio_table(size_t *num)
