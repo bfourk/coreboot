@@ -27,9 +27,9 @@ const struct pad_config gpio_table[] = {
 	/* GPD3:	Power Button					*/
 	PAD_CFG_NF(GPD3, UP_20K, DEEP, NF1),
 	/* GPD4:	Sleep S3					*/
-	PAD_NC(GPD4, NONE),
+	PAD_CFG_NF(GPD4, NONE, DEEP, NF1),
 	/* GPD5:	Sleep S4					*/
-	PAD_NC(GPD5, NONE),
+	PAD_CFG_NF(GPD5, NONE, DEEP, NF1),
 	/* GPD6:	Sleep A						*/
 	PAD_NC(GPD6, NONE),
 	/* GPD7:	Power Adapter Disable				*/
@@ -151,17 +151,17 @@ const struct pad_config gpio_table[] = {
 				High:	Enabled				*/
 	PAD_CFG_GPO(GPP_C2, 1, PLTRST),
 	/* C3:		SML 0 Clock					*/
-	PAD_CFG_NF(GPP_C3, NONE, DEEP, NF1),
+	PAD_NC(GPP_C3, NONE),
 	/* C4:		SML 0 Data					*/
-	PAD_CFG_NF(GPP_C4, NONE, DEEP, NF1),
+	PAD_NC(GPP_C4, NONE),
 	/* C5:		Boot Strap		Weak Internal PD 20K
 				Low:	ESPI
 				High:	Disabled			*/
-	PAD_CFG_GPO(GPP_C5, 0, DEEP),
+	PAD_CFG_GPO(GPP_C5, 0, PLTRST),
 	/* C6:		SML 1 Clock					*/
-	PAD_CFG_NF(GPP_C6, NONE, DEEP, NF1),
+	PAD_NC(GPP_C6, NONE),
 	/* C7:		SML 1 Data					*/
-	PAD_CFG_NF(GPP_C7, NONE, DEEP, NF1),
+	PAD_NC(GPP_C7, NONE),
 	/* C8:		Not Connected					*/
 	PAD_NC(GPP_C8, NONE),
 	/* C9:		Not Connected					*/
