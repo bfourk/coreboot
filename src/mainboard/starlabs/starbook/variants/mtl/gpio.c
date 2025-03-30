@@ -29,17 +29,17 @@ const struct pad_config gpio_table[] = {
 	 * End:		GPP_V22
 	 */
 	/* V00:	PM_BATLOW_N			*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_V00, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_V00, NONE, DEEP, NF1),
 	/* V01:	CHG_ACOK			*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_V01, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_V01, NONE, DEEP, NF1),
 	/* V02:	PCIE_WAKE_LAN			*/
 	PAD_NC(GPP_V02, NONE),
 	/* V03:	EC_PWRBTN_N			*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_V03, UP_20K, DEEP, NF1),
+	PAD_CFG_NF(GPP_V03, UP_20K, DEEP, NF1),
 	/* V04:	PM_SLP_S3_N			*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_V04, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_V04, NONE, DEEP, NF1),
 	/* V05:	SLP S4#				*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_V05, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_V05, NONE, DEEP, NF1),
 	/* V06:	GPD_6_SLP_A_N			*/
 	PAD_NC(GPP_V06, NONE),
 	/* V07:					*/
@@ -92,16 +92,16 @@ const struct pad_config gpio_table[] = {
 	/* C04:	SML0_DATA			*/
 	PAD_NC(GPP_C04, NONE),
 	/* C05:	ESPI
-	 *		HIGH:	ENABLED
-	 *		LOW:	DISABLED
+	 *		HIGH:	DISABLED
+	 *		LOW:	ENABLED
 	 *		WEAK INTERNAL PD 20K	*/
-	PAD_CFG_GPO(GPP_C05, 1, PLTRST),
+	PAD_CFG_GPO(GPP_C05, 0, PLTRST),
 	/* C06:	SML1_CLK_USBC_PD_N		*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_C06, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_C06, NONE, DEEP, NF1),
 	/* C07:	SML1_DATA_USBC_PD_N		*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_C07, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_C07, NONE, DEEP, NF1),
 	/* C08:	SML1ALERT			*/
-	PAD_NC(GPP_C08, NONE),
+	PAD_CFG_NF(GPP_C08, NONE, DEEP, NF1),
 	/* C09:					*/
 	PAD_NC(GPP_C09, NONE),
 	/* C10:					*/
@@ -116,7 +116,7 @@ const struct pad_config gpio_table[] = {
 	PAD_NC(GPP_C14, NONE),
 	/* C15:	RESERVED
 	 *		WEAK INTERNAL PD 20K	*/
-	PAD_NC(GPP_C15, NONE),
+	PAD_CFG_GPO(GPP_C15, 0, DEEP),
 	/* C16:					*/
 	PAD_NC(GPP_C16, NONE),
 	/* C17:					*/
@@ -140,12 +140,19 @@ const struct pad_config gpio_table[] = {
 	 * End:		GPP_A23
 	 */
 	/* A00:	ESPI_IO0_EC_R			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A00, UP_20K, DEEP, NF1),
 	/* A01:	ESPI_IO1_EC_R			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A01, UP_20K, DEEP, NF1),
 	/* A02:	ESPI_IO2_EC_R			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A02, UP_20K, DEEP, NF1),
 	/* A03:	ESPI_IO3_EC_R			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A03, UP_20K, DEEP, NF1),
 	/* A04:	ESPI_CS0_N			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A04, UP_20K, DEEP, NF1),
 	/* A05:	ESPI_CLK_EC_R			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A05, UP_20K, DEEP, NF1),
 	/* A06:	ESPI_RESET_N			*/
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A06, NONE, DEEP, NF1),
 	/* A07:					*/
 	PAD_NC(GPP_A07, NONE),
 	/* A08:					*/
@@ -157,7 +164,7 @@ const struct pad_config gpio_table[] = {
 	/* A11:					*/
 	PAD_NC(GPP_A11, NONE),
 	/* A12:	WLAN_PEWAKE			*/
-	PAD_CFG_GPI(GPP_A12, NONE, DEEP),
+	PAD_NC(GPP_A12, NONE),
 	/* A13:					*/
 	PAD_NC(GPP_A13, NONE),
 	/* A14:					*/
@@ -175,7 +182,7 @@ const struct pad_config gpio_table[] = {
 	/* A20:	M.2_CPU_SSD_RESET_N		*/
 	PAD_CFG_GPO(GPP_A20, 1, PLTRST),
 	/* A21:	I2C_PMC_PD_INT_N		*/
-	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_A21, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_A21, NONE, DEEP, NF1),
 	/* A22:					*/
 	PAD_NC(GPP_A22, NONE),
 	/* A23:					*/
@@ -202,11 +209,13 @@ const struct pad_config gpio_table[] = {
 	 *		HIGH:	ENABLED
 	 *		LOW:	DISABLED
 	 *		20K INTERNAL PU		*/
+	PAD_CFG_GPO(GPP_E06, 0, DEEP),
 	/* E07:					*/
 	PAD_NC(GPP_E07, NONE),
 	/* E08:					*/
 	PAD_NC(GPP_E08, NONE),
 	/* E09:	USB2_OC0			*/
+	PAD_NC(GPP_E09, NONE),
 	/* E10:					*/
 	PAD_NC(GPP_E10, NONE),
 	/* E11:					*/
@@ -218,7 +227,7 @@ const struct pad_config gpio_table[] = {
 	/* E14:	EDP_HPD_N			*/
 	PAD_CFG_NF(GPP_E14, NONE, DEEP, NF1),
 	/* E15:	BOOTHALT_N			*/
-	PAD_NC(GPP_E15, NONE),
+	PAD_CFG_NF(GPP_E15, NONE, DEEP, NF2),
 	/* E16:	BC_PROCHOT_N			*/
 	PAD_CFG_GPI_SCI(GPP_E16, NONE, PLTRST, EDGE_SINGLE, INVERT),
 	/* E17:					*/
@@ -247,7 +256,7 @@ const struct pad_config gpio_table[] = {
 	 *		HIGH:	ENABLED
 	 *		LOW:	DISABLED
 	 *		WEAK INTERNAL PD 20K	*/
-	PAD_NC(GPP_H01, NONE),
+	PAD_CFG_GPO(GPP_H01, 0, DEEP),
 	/* H02:	WLAN_RST_N			*/
 	PAD_CFG_GPO(GPP_H02, 1, PLTRST),
 	/* H03:					*/
@@ -336,18 +345,17 @@ const struct pad_config gpio_table[] = {
 	 *		HIGH:	MASTER
 	 *		LOW:	SLAVE
 	 *		WEAK INTERNAL PD 20K	*/
-	PAD_NC(GPP_F19, NONE),
+	PAD_CFG_GPO(GPP_F19, 0, DEEP),
 	/* F20:	SVID
 	 *		HIGH:	PRESENT
 	 *		LOW:	NOT PRESENT
 	 *		WEAK INTERNAL PD 20K	*/
-	PAD_NC(GPP_F20, NONE),
+	PAD_CFG_GPO(GPP_F20, 0, DEEP),
 	/* F21:	CCD
 	 *		HIGH:	BALTIC PEAK
 	 *		LOW:	BSSB-LS
 	 *		WEAK INTERNAL PU 20K	*/
-	/* F21:					*/
-	PAD_NC(GPP_F21, NONE),
+	PAD_CFG_GPO(GPP_F21, 0, DEEP),
 	/* F22:					*/
 	PAD_NC(GPP_F22, NONE),
 	/* F23:					*/
@@ -412,8 +420,11 @@ const struct pad_config gpio_table[] = {
 	PAD_NC(GPP_B12, NONE),
 	/* B13:	PLT_RST_N			*/
 	PAD_CFG_NF(GPP_B13, NONE, DEEP, NF1),
-	/* B14:					*/
-	PAD_NC(GPP_B14, NONE),
+	/* B14:	Top Swap Override
+	 *		HIGH:	EMABLED
+	 *		LOW:	DISABLED
+	 *		WEAK INTERNAL PD 20K	*/
+	PAD_CFG_GPO(GPP_B14, 0, PLTRST),
 	/* B15:					*/
 	PAD_NC(GPP_B15, NONE),
 	/* B16:	DDIB_DP_HPD			*/

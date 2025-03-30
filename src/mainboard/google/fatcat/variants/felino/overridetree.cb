@@ -60,6 +60,8 @@ chip soc/intel/pantherlake
 
 	# Enable CNVi WiFi
 	register "cnvi_wifi_core" = "true"
+	# Disable CNVi BT Offload
+	register "cnvi_bt_audio_offload" = "false"
 
 	register "usb2_ports[0]" = "USB2_PORT_TYPE_C(OC_SKIP)" # USB2_C0
 	register "usb2_ports[1]" = "USB2_PORT_TYPE_C(OC_SKIP)" # USB2_C1
@@ -286,6 +288,16 @@ device ref tbt_pcie_rp0 on end
 				register "wake" = "GPE0_DW2_18"
 				register "detect" = "1"
 				device i2c 0x15 on end
+			end
+			chip drivers/i2c/hid
+				register "generic.hid" = ""FTCS0038""
+				register "generic.cid" = ""PNP0C50""
+				register "generic.desc" = ""Focal Touchpad""
+				register "generic.irq" = "ACPI_IRQ_WAKE_LEVEL_LOW(GPP_E18_IRQ)"
+				register "generic.wake" = "GPE0_DW2_18"
+				register "generic.detect" = "1"
+				register "hid_desc_reg_offset" = "0x20"
+				device i2c 0x38 on end
 			end
 		end # I2C4
 
