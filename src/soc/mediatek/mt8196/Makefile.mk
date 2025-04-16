@@ -60,7 +60,7 @@ ramstage-y += ../common/display.c
 ramstage-y += ../common/dpm_v2.c
 ramstage-y += ../common/dp/dptx_common.c ../common/dp/dptx_hal_common.c
 ramstage-y += dptx.c dptx_hal.c dp_intf.c
-ramstage-y += dramc_info.c
+ramstage-y += ../common/dramc_info.c
 ramstage-y += ../common/early_init.c
 ramstage-y += ../common/emi.c
 ramstage-y += gpueb.c
@@ -100,6 +100,15 @@ ifneq ($(wildcard $(BL31_LIB)),)
 BL31_MAKEARGS += MTKLIB_PATH=$(BL31_LIB)
 endif
 
+PI_IMG := $(MT8196_BLOB_DIR)/$(call strip_quotes,$(CONFIG_PI_IMG_FIRMWARE))
+
+.PHONY: check_pi_img
+check_pi_img: $(PI_IMG)
+	./util/mediatek/check-pi-img.py $<
+
+# Make sure check_pi_img is always run.
+$(obj)/coreboot.pre: | check_pi_img
+
 mcu-firmware-files := \
 	$(CONFIG_DPM_DM_FIRMWARE) \
 	$(CONFIG_DPM_PM_FIRMWARE) \
@@ -135,6 +144,6 @@ $(FSP_RAMSTAGE_CBFS)-compression := $(CBFS_COMPRESS_FLAG)
 cbfs-files-y += $(FSP_RAMSTAGE_CBFS)
 
 $(objcbfs)/bootblock.bin: $(objcbfs)/bootblock.raw.bin
-	./util/mtkheader/gen-bl-img.py mt8196 sf $< $@
+	./util/mediatek/gen-bl-img.py mt8196 sf $< $@
 
 endif
