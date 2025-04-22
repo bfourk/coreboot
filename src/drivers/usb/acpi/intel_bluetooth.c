@@ -49,6 +49,28 @@ void acpi_device_intel_bt(const struct acpi_gpio *enable_gpio,
 			  bool audio_offload)
 {
 /*
+ *	Name (_S0W, 3)
+ */
+	acpigen_write_name_integer("_S0W", ACPI_DEVICE_SLEEP_D3_HOT);
+
+/*
+ *	Name (_DSD, Package (0x02)
+ *	{
+ *		ToUUID ("6211e2c0-58a3-4af3-90e1-927a4e0c55a4")
+ *		Package (0x01)
+ *		{
+ *			Package (0x02)
+ *			{
+ *				"HotPlugSupportInD3",
+ *				One
+ *			}
+ *		}
+ *	})
+ *
+ */
+	acpi_device_add_hotplug_support_in_d3(NULL);
+
+/*
  *	Name (RDLY, 0x69)
  */
 	acpigen_write_name_integer("RDLY", 0x69);
@@ -110,6 +132,9 @@ void acpi_device_intel_bt(const struct acpi_gpio *enable_gpio,
  *		}
  *		Method (_ON, 0, NotSerialized)
  *		{
+ *			If ((\_SB.PCI0.GBTE() == 1))
+ *				Return (1)
+ *			}
  *			\_SB.PCI0.SBTE(1)
  *		}
  *		Method (_OFF, 0, NotSerialized)
@@ -126,7 +151,7 @@ void acpi_device_intel_bt(const struct acpi_gpio *enable_gpio,
  *				\_SB.PCI0.BTRK (One)
  *				Sleep (RDLY)
  *				Release (\_SB.PCI0.CNMT)
-			}
+ *			}
  *		}
  *	}
  */
@@ -149,6 +174,16 @@ void acpi_device_intel_bt(const struct acpi_gpio *enable_gpio,
 		acpigen_write_method("_ON", 0);
 		{
 			if (enable_gpio->pin_count) {
+				acpigen_write_store();
+				acpigen_emit_namestring("\\_SB.PCI0.GBTE");
+				acpigen_emit_byte(LOCAL0_OP);
+
+				acpigen_write_if_lequal_op_int(LOCAL0_OP, 1);
+				{
+					acpigen_write_return_integer(1);
+				}
+				acpigen_pop_len();
+
 				acpigen_emit_namestring("\\_SB.PCI0.SBTE");
 				acpigen_emit_byte(1);
 			}
@@ -217,32 +252,6 @@ void acpi_device_intel_bt(const struct acpi_gpio *enable_gpio,
 	{
 		acpigen_write_package(1);
 		acpigen_emit_namestring("BTRT");
-	}
-	acpigen_pop_len();
-
-/*
- *	Method (_PS0, 0, NotSerialized)
- *	{
- *		\_SB.PCI0.SBTE(1)
- *	}
- */
-	acpigen_write_method("_PS0", 0);
-	{
-		acpigen_emit_namestring("\\_SB.PCI0.SBTE");
-		acpigen_emit_byte(1);
-	}
-	acpigen_pop_len();
-
-/*
- *	Name (_PS3, Package (0x01)
- *	{
- *		\_SB.PCI0.SBTE(0)
- *	}
- */
-	acpigen_write_method("_PS3", 0);
-	{
-		acpigen_emit_namestring("\\_SB.PCI0.SBTE");
-		acpigen_emit_byte(0);
 	}
 	acpigen_pop_len();
 

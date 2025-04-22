@@ -40,6 +40,17 @@ static const struct pad_config lte_disable_pads[] = {
 	PAD_NC(GPP_H23, NONE),
 };
 
+static const struct pad_config ish_disable_pads[] = {
+	/* B5  : GPP_B5 ==> NC */
+	PAD_NC(GPP_B5, NONE),
+	/* B6  : GPP_B6 ==> NC */
+	PAD_NC(GPP_B6, NONE),
+	/* D1  : ISH_GP1 ==> NC */
+	PAD_NC(GPP_D1, NONE),
+	/* E9  : SOC_ACC2_INT ==> NC */
+	PAD_NC_LOCK(GPP_E9, NONE, LOCK_CONFIG),
+};
+
 void fw_config_gpio_padbased_override(struct pad_config *padbased_table)
 {
 	if (fw_config_probe(FW_CONFIG(TOUCHSCREEN, TOUCHSCREEN_NONE))) {
@@ -51,6 +62,11 @@ void fw_config_gpio_padbased_override(struct pad_config *padbased_table)
 		printk(BIOS_INFO, "Disable Cellular GPIO pins.\n");
 		gpio_padbased_override(padbased_table, lte_disable_pads,
 				ARRAY_SIZE(lte_disable_pads));
+	}
+	if (!fw_config_probe(FW_CONFIG(ISH, ISH_ENABLE))) {
+		printk(BIOS_INFO, "Disable ISH GPIO pins.\n");
+		gpio_padbased_override(padbased_table, ish_disable_pads,
+				ARRAY_SIZE(ish_disable_pads));
 	}
 }
 
