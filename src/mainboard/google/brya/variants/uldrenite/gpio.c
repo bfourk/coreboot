@@ -61,10 +61,10 @@ static const struct pad_config gpio_table[] = {
 	PAD_CFG_GPI_IRQ_WAKE(GPP_B3, NONE, PWROK, LEVEL, INVERT),
 	/* B4  : PROC_GP3 ==> EN_PP3300_UCAM_X */
 	PAD_CFG_GPO_LOCK(GPP_B4, 1, LOCK_CONFIG),
-	/* B5  : GPP_B5 ==> NC */
-	PAD_NC(GPP_B5, NONE),
-	/* B6  : GPP_B6 ==> NC */
-	PAD_NC(GPP_B6, NONE),
+	/* B5  : GPP_B5 ==> ISH_I2C0_SCL */
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_B5, NONE, DEEP, NF1),
+	/* B6  : GPP_B6 ==> ISH_I2C0_SDA */
+	PAD_CFG_NF_IOSTANDBY_IGNORE(GPP_B6, NONE, DEEP, NF1),
 	/* B7  : GPP_B7 ==> NC */
 	PAD_NC_LOCK(GPP_B7, NONE, LOCK_CONFIG),
 	/* B8  : GPP_B8 ==> NC */
@@ -119,8 +119,8 @@ static const struct pad_config gpio_table[] = {
 
 	/* D0  : ISH_GP0 ==> UCAM_FW_PROTECT */
 	PAD_CFG_GPO(GPP_D0, 1, DEEP),
-	/* D1  : ISH_GP1 ==> NC */
-	PAD_NC(GPP_D1, NONE),
+	/* D1  : ISH_GP1 ==> SOC_GSEN2_INT# */
+	PAD_CFG_NF(GPP_D1, NONE, DEEP, NF1),
 	/* D2  : ISH_GP2 ==> TOUCH_SCREEN_DET# */
 	PAD_CFG_GPO_LOCK(GPP_D2, 1, LOCK_CONFIG),
 	/* D3  : NC ==> PHY_SHUTTER_DET */
@@ -176,8 +176,8 @@ static const struct pad_config gpio_table[] = {
 	PAD_NC(GPP_E7, NONE),
 	/* E8  : GPP_E8 ==> WLAN_DISABLE_L */
 	PAD_CFG_GPO(GPP_E8, 1, DEEP),
-	/* E9  : NC */
-	PAD_NC_LOCK(GPP_E9, NONE, LOCK_CONFIG),
+	/* E9  : GPP_E9 ==> SOC_ACC2_INT# */
+	PAD_CFG_NF(GPP_E9, NONE, DEEP, NF1),
 	/* E10 : NC */
 	PAD_NC_LOCK(GPP_E10, NONE, LOCK_CONFIG),
 	/* E11 : NC */
