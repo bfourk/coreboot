@@ -44,3 +44,4 @@ tarballs/
 *~
 *.kate-swp
 *.kdev4
+/payloads/external/Memtest86Plus/memtest86plus_v6
