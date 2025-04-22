@@ -1,0 +1,4 @@
+## SPDX-License-Identifier: GPL-2.0-only
+
+config BOARD_HEWLETT_PACKARD_HP_PAVILION_DV6_NOTEBOOK_PC
+	bool "HP Pavilion dv6 Notebook PC"
