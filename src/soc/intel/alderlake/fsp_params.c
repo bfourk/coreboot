@@ -1249,6 +1249,9 @@ static void soc_silicon_init_params(FSP_S_CONFIG *s_cfg,
 	/* Override settings per board if required. */
 	mainboard_update_soc_chip_config(config);
 
+	/* Runtime configuration of S0ix */
+	config->s0ix_enable = get_uint_option("s0ix_enable", config->s0ix_enable);
+
 	void (*const fill_fsps_params[])(FSP_S_CONFIG *s_cfg,
 			const struct soc_intel_alderlake_config *config) = {
 		fill_fsps_lpss_params,
@@ -1378,7 +1381,7 @@ __weak void mainboard_silicon_init_params(FSP_S_CONFIG *s_cfg)
 }
 
 /* Handle FSP logo params */
-void soc_load_logo(FSPS_UPD *supd)
+void soc_load_logo_by_fsp(FSPS_UPD *supd)
 {
 	struct soc_intel_common_config *config = chip_get_common_soc_structure();
 	FSP_S_CONFIG *s_cfg = &supd->FspsConfig;
