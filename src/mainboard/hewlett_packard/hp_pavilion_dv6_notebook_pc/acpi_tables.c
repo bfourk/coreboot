@@ -10,7 +10,7 @@ void mainboard_fill_gnvs(struct global_nvs *gnvs)
 	gnvs->lids = 1;
 
 	/* Temperature at which OS will shutdown */
-	gnvs->tcrt = 100;
+	gnvs->tcrt = 105; // This is listed as TJMax in Intel's documentation
 	/* Temperature at which OS will throttle CPU */
-	gnvs->tpsv = 90;
+	gnvs->tpsv = 99;
 }
