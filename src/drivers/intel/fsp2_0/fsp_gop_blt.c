@@ -9,9 +9,6 @@
 
 static bool is_bmp_image_valid(efi_bmp_image_header *header)
 {
-	if (header == NULL)
-		return false;
-
 	/* Check if the BMP Header Signature is valid */
 	if (header->CharB != 'B' || header->CharM != 'M')
 		return false;
@@ -31,20 +28,11 @@ static bool is_bmp_image_valid(efi_bmp_image_header *header)
 
 static bool is_bmp_image_compressed(efi_bmp_image_header *header)
 {
-	if (header == NULL)
-		return false;
-
-	if (header->CompressionType != 0)
-		return true;
-
-	return false;
+	return header->CompressionType != 0;
 }
 
 static bool is_bitmap_format_supported(efi_bmp_image_header *header)
 {
-	if (header == NULL)
-		return false;
-
 	/*
 	 * Check BITMAP format is supported
 	 * BMP_IMAGE_HEADER = BITMAP_FILE_HEADER + BITMAP_INFO_HEADER
@@ -58,9 +46,6 @@ static bool is_bitmap_format_supported(efi_bmp_image_header *header)
 
 static bool do_bmp_image_authentication(efi_bmp_image_header *header)
 {
-	if (header == NULL)
-		return false;
-
 	if (!is_bmp_image_valid(header)) {
 		printk(BIOS_ERR, "%s: BMP Image Header is invalid.\n", __func__);
 		return false;
@@ -88,9 +73,6 @@ static uint32_t calculate_blt_buffer_size(efi_bmp_image_header *header)
 {
 	uint32_t blt_buffer_size;
 
-	if (header == NULL)
-		return 0;
-
 	/* Calculate the size required for BLT buffer */
 	blt_buffer_size = header->PixelWidth * header->PixelHeight *
 			 sizeof(efi_graphics_output_blt_pixel);
@@ -100,12 +82,9 @@ static uint32_t calculate_blt_buffer_size(efi_bmp_image_header *header)
 	return blt_buffer_size;
 }
 
-static uint32_t get_color_map_num(efi_bmp_image_header *header)
+static int get_color_map_num(efi_bmp_image_header *header)
 {
-	uint32_t col_map_number = 0;
-
-	if (header == NULL)
-		return 0;
+	int col_map_number;
 
 	switch (header->BitPerPixel) {
 	case 1:
@@ -118,6 +97,11 @@ static uint32_t get_color_map_num(efi_bmp_image_header *header)
 		col_map_number = 256;
 		break;
 	default:
+		/*
+		 * For other bit depths (e.g., 24-bit and 32-bit) that doesn't have
+		 * a standard palette, col_map_number remains 0.
+		 */
+		col_map_number = 0;
 		break;
 	}
 
@@ -127,7 +111,7 @@ static uint32_t get_color_map_num(efi_bmp_image_header *header)
 	 */
 	if (header->ImageOffset - sizeof(efi_bmp_image_header) <
 			 sizeof(efi_bmp_color_map) * col_map_number)
-		return 0;
+		return -1;
 
 	return col_map_number;
 }
@@ -171,9 +155,6 @@ static uint32_t get_color_map_num(efi_bmp_image_header *header)
 static bool calculate_adj_height_width(const efi_bmp_image_header *header, size_t *adjusted_x,
 	 size_t *adjusted_y, enum lb_fb_orientation orientation, int blt_width, int blt_height)
 {
-	if (!header || !adjusted_x || !adjusted_y)
-		return false;
-
 	size_t flipped_x = header->PixelWidth - blt_width - 1;
 	size_t flipped_y = header->PixelHeight - blt_height - 1;
 
@@ -242,9 +223,6 @@ static efi_graphics_output_blt_pixel *get_gop_blt_pixel(
 	size_t gop_x;
 	size_t gop_y;
 	size_t gop_width;
-
-	if (!header || !gop_blt_buffer)
-		return NULL;
 
 	switch (orientation) {
 	case LB_FB_ORIENTATION_LEFT_UP:
@@ -318,9 +296,6 @@ static void *fill_blt_buffer(efi_bmp_image_header *header,
 	uint8_t *bmp_image_header;
 	efi_bmp_color_map *bmp_color_map;
 	size_t image_index;
-
-	if (header == NULL)
-		return NULL;
 
 	gop_blt_ptr = malloc(sizeof(blt_buffer_size));
 	if (!gop_blt_ptr)
@@ -450,7 +425,7 @@ void fsp_convert_bmp_to_gop_blt(efi_uintn_t *logo, uint32_t *logo_size,
 	if (!blt_buffer_size)
 		return;
 
-	if (!get_color_map_num(bmp_header))
+	if (get_color_map_num(bmp_header) < 0)
 		return;
 
 	bool is_standard_orientation = (orientation == LB_FB_ORIENTATION_NORMAL ||

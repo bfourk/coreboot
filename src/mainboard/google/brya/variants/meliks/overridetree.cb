@@ -77,25 +77,8 @@ chip soc/intel/alderlake
 		[PchSerialIoIndexI2C5] = PchSerialIoPci,
 	}"
 
-	# VR Settings
-	register "domain_vr_config[VR_DOMAIN_IA]" = "{
-		.vr_config_enable = 1,
-		.tdc_timewindow = 1000,
-		.ac_loadline = 500,
-		.dc_loadline = 500,
-		.psi1threshold = VR_CFG_AMP(20),
-		.psi2threshold = VR_CFG_AMP(5),
-		.psi3threshold = VR_CFG_AMP(1),
-	}"
-
-	register "domain_vr_config[VR_DOMAIN_GT]" = "{
-		.vr_config_enable = 1,
-		.tdc_timewindow = 1000,
-		.psi1threshold = VR_CFG_AMP(13),
-		.psi2threshold = VR_CFG_AMP(5),
-		.psi3threshold = VR_CFG_AMP(1),
-
-	}"
+	# 25A of Vcc In Aux Imon Iccmax value for VCCANA MBVR design
+	register "vccin_aux_imon_iccmax" = "PD_TIER_PREMIUM" # 25A
 
 	# Enable the Cnvi BT Audio Offload
 	register "cnvi_bt_audio_offload" = "1"
