@@ -70,8 +70,7 @@ chip northbridge/intel/sandybridge # FIXME: GPU registers may not always apply.
 			device ref xhci on
 				subsystemid 0x103c 0x1818
 			end
-			device ref mei1 on
-				subsystemid 0x103c 0x1818
+			device ref mei1 off
 			end
 			device ref mei2 off
 			end

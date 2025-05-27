@@ -68,7 +68,7 @@ static const struct pch_gpio_set1 pch_gpio_set1_level = {
 };
 
 static const struct pch_gpio_set1 pch_gpio_set1_reset = {
-	.gpio24 = GPIO_RESET_RSMRST,
+	.gpio30 = GPIO_RESET_RSMRST,
 };
 
 static const struct pch_gpio_set1 pch_gpio_set1_invert = {
@@ -139,8 +139,8 @@ static const struct pch_gpio_set2 pch_gpio_set2_direction = {
 
 static const struct pch_gpio_set2 pch_gpio_set2_level = {
 	.gpio33 = GPIO_LEVEL_LOW,
-	.gpio50 = GPIO_LEVEL_LOW,
-	.gpio54 = GPIO_LEVEL_HIGH,
+	.gpio50 = GPIO_LEVEL_HIGH,
+	.gpio54 = GPIO_LEVEL_LOW,
 	.gpio57 = GPIO_LEVEL_HIGH,
 	.gpio60 = GPIO_LEVEL_HIGH,
 };
